@@ -23,6 +23,8 @@ the names used in the script
 * Line8 repeat gff3 file from annotation
   * `Line8_repeats.gff3`
 
+## Analysis in R
+```
 ### LOAD PACKAGES ###
 library(data.table)
 library(GENESPACE)
@@ -103,4 +105,4 @@ chr_cont_dt <- data.table(chr_cont_df)
 chr_cont_dt[, CHROM := names(gC_chr_width[[1]])]
 
 # chr_cont_dt can be used to compare patterns between chromosomes
-
+```
