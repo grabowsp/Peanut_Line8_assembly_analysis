@@ -1,5 +1,28 @@
 # Analysis in R of repetitive sequence content in Line 8 assembly/annotation
 
+## Requirements
+* R
+* R packages
+  * data.table
+  * GENESPACE
+  * Biostrings
+
+## Input Files
+* actual file names will be different; file names here correspond to 
+the names used in the script
+* Line8 assembly fasta
+  * `Line8.fasta`
+* Index of Line8 assembly fasta
+  * `Line8.fasta.fai`
+  * can be made using `samtools faidx Line8.fasta`
+* Line8 gene gff3 file from annotation
+  * `Line8_gene.gff3`
+  * need to add the following line to the gff3 header, just before first 
+    line of data:
+    * `seqid\tsource\ttype\tstart\tend\tscore\tstrand\tphase\tattributes`
+* Line8 repeat gff3 file from annotation
+  * `Line8_repeats.gff3`
+
 ### LOAD PACKAGES ###
 library(data.table)
 library(GENESPACE)
@@ -13,13 +36,10 @@ names(dnaSS) <- sapply(names(dnaSS), function(x) strsplit(x, " ")[[1]][1])
 dnaSS <- dnaSS[Biostrings::width(dnaSS) > 1e6]
 seqInfo <- pull_seqInfo(dnaSS)
 
-# index file of assembly fasta; can be made using `samtools faidx Line8.fasta`
 fai_file <- 'Line8.fasta.fai'
 l8_fai <- fread(fai_file)
 
 # Line 8 gene annotation gff3 file
-# for this script, need to add the following line to the gff3 header, just before first line of data:
-# `seqid	source	type	start	end	score	strand	phase	attributes`
 geneGffFile <- 'Line8_gene.gff3'
 genes <- as.data.frame(rtracklayer::readGFF(
   geneGffFile,
